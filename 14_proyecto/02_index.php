@@ -1,5 +1,5 @@
 <?php
-require("main.php");
+require("02_main.php");
 
 
 $status = "";
@@ -14,15 +14,14 @@ if(isset($_POST['form'])){
 
     if( validate_filled(...$_POST) ){ 
         //validacion con regex
-        $nombre_regex = preg_match('/^\w{2,14}[A-Z,a-z]$/', $_POST['nombre'], $nombre);
+        $nombre_regex = preg_match('/^(\w{1,20}[\.,\s]+)+(\w{1,20}[\s\.,]?)?$/', $_POST['nombre'], $nombre);
         $email_regex = preg_match('/^\w{2,14}@\w[a-z,A-Z]{2,6}\.\w[a-z,A-Z]{1,2}$/', $_POST['email'], $email);
-        $asunto_regex = preg_match('/^\w{2,14}$/', $_POST['asunto'], $asunto);
-        $mensaje_regex = preg_match('/^(\w+[\,\s\?\$\d\.\(\\=)]+)+$/', $_POST['mensaje'], $mensaje);
-        //$mensaje_regex = preg_match('/.*/', $_POST['mensaje'], $mensaje);
+        $asunto_regex = preg_match('/^(\w{1,20}[\s\.,\$]+)+(\w{1,20}[\s\.,\$]?)?$/', $_POST['asunto'], $asunto);
+        $mensaje_regex = preg_match('/^(\w{1,20}[\s\.,\$:;]+)+(\w{1,20}[\s\.,\$:;]?)?$/', $_POST['mensaje'], $mensaje);
 
         if($nombre_regex && $email_regex && $asunto_regex && $mensaje_regex){
 
-            $body = "$nombre[0] <$email[0]> te envia el siguiente mensaje: <br><br> $mensaje[0]";
+            $body = "$nombre[0] {$email[0]} te envia el siguiente mensaje: <br><br> $mensaje[0]";
 
             send_mail($asunto[0], $body, $email[0], $nombre[0], true);
             $message = "Form sent successfull";
@@ -61,7 +60,7 @@ if(isset($_POST['form'])){
             </div>
         <?php endif ?>
 
-        <form class="form_container" action="./index.php" method="POST">
+        <form class="form_container" action="./02_index.php" method="POST">
             <h1>Contactanos!</h1>
     
             <div class="input_group">
